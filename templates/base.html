@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}La Bodegona{% endblock %}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>:root{ --brand:#0f6fff; --brand-dark:#0b4bd6; --accent:#ffb703; }</style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+  <header class="bg-white border-b sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex gap-4 items-center">
+      <a href="{{ url_for('index') }}" class="font-bold text-lg">La Bodegona</a>
+      <form method="get" action="{{ url_for('index') }}" class="flex-1">
+        <input name="q" value="{{ request.args.get('q','') }}" placeholder="Buscar productos..." class="w-full border rounded px-3 py-2"/>
+      </form>
+      <a href="{{ url_for('cart_view') }}" class="px-3 py-2 rounded bg-gray-100">Carrito ({{ cart_count }})</a>
+      {% if session.get('user') %}
+        <a href="{{ url_for('orders_list') }}" class="px-3 py-2 rounded bg-gray-100">Mis pedidos</a>
+        <a href="{{ url_for('profile') }}" class="px-3 py-2 rounded bg-gray-100">Perfil</a>
+        <form method="post" action="{{ url_for('logout') }}"><button class="px-3 py-2 rounded bg-gray-100">Salir</button></form>
+        <a href="{{ url_for('admin.dashboard') }}" class="px-3 py-2 rounded bg-[var(--brand)] text-white">Admin</a>
+      {% else %}
+        <a href="{{ url_for('register') }}" class="px-3 py-2 rounded bg-gray-100">Regístrate</a>
+        <a href="{{ url_for('login') }}" class="px-3 py-2 rounded bg-[var(--brand)] text-white">Iniciar sesión</a>
+      {% endif %}
+    </div>
+  </header>
+  <main class="max-w-7xl mx-auto px-4">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="mt-4 space-y-2">
+          {% for cat,msg in messages %}
+            <div class="px-3 py-2 rounded border {{ 'bg-red-50 border-red-300' if cat=='danger' else 'bg-green-50 border-green-300' if cat=='success' else 'bg-yellow-50 border-yellow-300' if cat=='warning' else 'bg-gray-50 border-gray-200' }}">{{ msg }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="mt-12 py-10 text-sm text-gray-500">
+    <div class="max-w-7xl mx-auto px-4">© 2025 La Bodegona — Todos los derechos reservados</div>
+  </footer>
+</body>
+</html>

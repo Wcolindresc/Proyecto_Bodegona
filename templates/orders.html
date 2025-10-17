@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Mis pedidos{% endblock %}
+{% block content %}
+  <h1 class="text-xl font-semibold mt-6 mb-4">Mis pedidos</h1>
+  <div class="bg-white border rounded divide-y">
+    <div class="grid grid-cols-5 px-4 py-2 text-sm text-gray-500">
+      <div>ID</div><div>Estado</div><div>Pago</div><div>Fecha</div><div>Total</div>
+    </div>
+    {% for o in orders %}
+      <div class="grid grid-cols-5 px-4 py-2">
+        <div>#{{ o.id }}</div>
+        <div>{{ o.status }}</div>
+        <div>{{ o.payment_status or '-' }}</div>
+        <div>{{ o.created_at[:16].replace('T',' ') if o.created_at }}</div>
+        <div class="font-semibold">{{ o.currency }} {{ '%.2f'|format(o.total or 0) }}</div>
+      </div>
+    {% else %}
+      <div class="px-4 py-6 text-gray-500">Aún no has realizado pedidos.</div>
+    {% endfor %}
+  </div>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Checkout{% endblock %}
+{% block content %}
+  <h1 class="text-xl font-semibold mt-6 mb-4">Checkout</h1>
+  <div class="grid md:grid-cols-3 gap-6">
+    <div class="md:col-span-2 space-y-4">
+      {% for it in items %}
+        <div class="bg-white border rounded p-4 flex items-center gap-4">
+          <img src="{{ it.image_url }}" class="w-16 h-16 object-cover rounded bg-gray-100">
+          <div class="flex-1">
+            <div class="font-medium">{{ it.product.name }}</div>
+            <div class="text-sm text-gray-500">{{ it.qty }} × {{ CURRENCY }} {{ '%.2f'|format(it.price) }}</div>
+          </div>
+          <div class="font-semibold">{{ CURRENCY }} {{ '%.2f'|format(it.subtotal) }}</div>
+        </div>
+      {% endfor %}
+    </div>
+    <div class="bg-white border rounded p-4 h-fit">
+      <div class="text-sm text-gray-500 mb-2">Dirección de envío</div>
+      <form method="post" action="{{ url_for('checkout_pay') }}" class="space-y-4">
+        <select name="address_id" class="w-full border rounded px-3 py-2" required>
+          <option value="">Selecciona una dirección</option>
+          {% for a in addresses %}
+            <option value="{{ a.id }}">{{ a.full_name }} — {{ a.city }}</option>
+          {% endfor %}
+        </select>
+        <div class="text-sm text-gray-500">Total</div>
+        <div class="text-2xl font-semibold">{{ CURRENCY }} {{ '%.2f'|format(total) }}</div>
+        <button class="w-full px-4 py-2 bg-blue-600 text-white rounded">Pagar con Pagadito</button>
+      </form>
+    </div>
+  </div>
+{% endblock %}

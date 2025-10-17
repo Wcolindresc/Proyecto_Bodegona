@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Admin — Categorías{% endblock %}
+{% block content %}
+  <div class="flex items-center justify-between mt-6 mb-4">
+    <h1 class="text-xl font-semibold">Categorías</h1>
+    <a href="{{ url_for('admin.categories_new') }}" class="px-3 py-2 bg-blue-600 text-white rounded">Nueva</a>
+  </div>
+  <div class="bg-white border rounded divide-y">
+    <div class="grid grid-cols-3 px-4 py-2 text-sm text-gray-500">
+      <div>ID</div><div>Nombre</div><div></div>
+    </div>
+    {% for c in categories %}
+      <div class="grid grid-cols-3 px-4 py-2 items-center">
+        <div>{{ c.id }}</div>
+        <div>{{ c.name }}</div>
+        <div class="text-right"><a class="text-blue-600" href="{{ url_for('admin.categories_edit', cid=c.id) }}">Editar</a></div>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

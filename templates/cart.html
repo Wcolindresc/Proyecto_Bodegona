@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Carrito{% endblock %}
+{% block content %}
+  <h1 class="text-xl font-semibold mt-6 mb-4">Carrito</h1>
+  <div class="grid md:grid-cols-3 gap-6">
+    <div class="md:col-span-2 space-y-4">
+      {% for it in items %}
+        <div class="bg-white border rounded p-4 flex items-center gap-4">
+          <img src="{{ it.image_url }}" class="w-20 h-20 object-cover rounded bg-gray-100">
+          <div class="flex-1">
+            <div class="font-medium">{{ it.product.name }}</div>
+            <div class="text-sm text-gray-500">{{ CURRENCY }} {{ '%.2f'|format(it.price) }}</div>
+            <form method="post" action="{{ url_for('cart_update') }}" class="mt-2 flex gap-2 items-center">
+              <input type="hidden" name="item_id" value="{{ it.id }}">
+              <input type="number" name="qty" value="{{ it.qty }}" min="1" class="border rounded px-2 w-16">
+              <button class="px-3 py-2 bg-gray-100 rounded">Actualizar</button>
+            </form>
+          </div>
+          <div class="font-semibold">{{ CURRENCY }} {{ '%.2f'|format(it.subtotal) }}</div>
+          <form method="post" action="{{ url_for('cart_remove') }}">
+            <input type="hidden" name="item_id" value="{{ it.id }}">
+            <button class="ml-2 px-3 py-2 bg-red-600 text-white rounded">Quitar</button>
+          </form>
+        </div>
+      {% else %}
+        <div class="text-gray-500">Tu carrito está vacío.</div>
+      {% endfor %}
+    </div>
+    <div class="bg-white border rounded p-4 h-fit">
+      <div class="text-sm text-gray-500">Subtotal</div>
+      <div class="text-2xl font-semibold mb-4">{{ CURRENCY }} {{ '%.2f'|format(total) }}</div>
+      <a href="{{ url_for('checkout_view') }}" class="block text-center px-4 py-2 bg-blue-600 text-white rounded">Ir a pagar</a>
+    </div>
+  </div>
+{% endblock %}

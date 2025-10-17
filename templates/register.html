@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Registro{% endblock %}
+{% block content %}
+  <div class="max-w-md mx-auto mt-10 bg-white border rounded p-6">
+    <h1 class="text-xl font-semibold mb-4">Crear cuenta</h1>
+    <form method="post" action="{{ url_for('register_post') }}" class="space-y-4">
+      <div>
+        <label class="block text-sm mb-1">Correo</label>
+        <input name="email" type="email" required class="w-full border rounded px-3 py-2">
+      </div>
+      <div>
+        <label class="block text-sm mb-1">Contraseña</label>
+        <input name="password" type="password" required class="w-full border rounded px-3 py-2">
+      </div>
+      <button class="px-4 py-2 bg-blue-600 text-white rounded">Crear</button>
+    </form>
+  </div>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Admin — Orden{% endblock %}
+{% block content %}
+  <h1 class="text-xl font-semibold mt-6 mb-4">Orden #{{ order.id }}</h1>
+  <div class="bg-white border rounded p-4">
+    <div class="grid md:grid-cols-4 gap-3 text-sm">
+      <div><b>Usuario:</b> {{ order.user_id }}</div>
+      <div><b>Estado:</b> {{ order.status }}</div>
+      <div><b>Pago:</b> {{ order.payment_status }}</div>
+      <div><b>Total:</b> {{ order.currency }} {{ '%.2f'|format(order.total or 0) }}</div>
+    </div>
+    <form method="post" action="{{ url_for('admin.order_status_admin', oid=order.id) }}" class="mt-4 flex gap-2">
+      <select name="status" class="border rounded px-3 py-2">
+        {% for s in ['pending','paid','processing','shipped','delivered','cancelled'] %}
+          <option value="{{ s }}" {% if s==order.status %}selected{% endif %}>{{ s }}</option>
+        {% endfor %}
+      </select>
+      <button class="px-3 py-2 bg-blue-600 text-white rounded">Actualizar</button>
+    </form>
+  </div>
+  <h2 class="text-lg font-semibold mt-6 mb-2">Artículos</h2>
+  <div class="bg-white border rounded divide-y">
+    <div class="grid grid-cols-4 px-4 py-2 text-sm text-gray-500">
+      <div>Producto</div><div>Precio</div><div>Cantidad</div><div>Subtotal</div>
+    </div>
+    {% for it in items %}
+      <div class="grid grid-cols-4 px-4 py-2">
+        <div>{{ it.name }}</div>
+        <div>{{ '%.2f'|format(it.price or 0) }}</div>
+        <div>{{ it.qty }}</div>
+        <div>{{ '%.2f'|format(it.subtotal or 0) }}</div>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}

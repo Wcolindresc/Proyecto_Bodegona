@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Admin — Categoría{% endblock %}
+{% block content %}
+  <h1 class="text-xl font-semibold mt-6 mb-4">{{ 'Editar' if category else 'Nueva' }} categoría</h1>
+  <form method="post" class="bg-white border rounded p-4 grid md:grid-cols-2 gap-4">
+    <input class="border rounded px-3 py-2" name="name" placeholder="Nombre" value="{{ category.name if category }}">
+    <input class="border rounded px-3 py-2" name="slug" placeholder="slug-ejemplo" value="{{ category.slug if category }}">
+    <div class="md:col-span-2">
+      <button class="px-4 py-2 bg-blue-600 text-white rounded">Guardar</button>
+    </div>
+  </form>
+{% endblock %}
